@@ -1,4 +1,4 @@
-# Package Builder Debugging Notes (v1.0.5)
+# Package Builder Debugging Notes (v1.0.7)
 
 This file is meant to travel *with* the project plan and coding policy so the package builder can remind ChatGPT of **non-negotiable rules** when generating ES modules.
 
@@ -254,7 +254,7 @@ When generating code from the package builder:
 1. Provide:
    - Coding policy  
    - Project plan  
-   - **This debugging notes file (v1.0.5)**
+   - **This debugging notes file (v1.0.7)**
 
 2. Explicitly instruct ChatGPT to:
    - Read the debugging notes fully before generating any code.
@@ -305,6 +305,7 @@ export async function parseFiles(filePaths) {
 export async function parseFiles(filePaths) {
   // real implementation
 }
+```
 
 ## 9. Syntax check: no stray quotes or unbalanced parentheses
 
@@ -314,6 +315,63 @@ All generated `.mjs` files (including patch scripts) **must be valid JavaScript 
 
 ```bash
 node --check <filename>.mjs
+```
+
+If it fails, fix the syntax before running or shipping the file.
 
 ---
 
+## 10. Regex literals + inline comments can create silent syntax errors
+
+### Rule
+
+In JavaScript, `//` always starts a single-line comment unless it is **inside** a string or regex literal. A multiline expression that places `//` on its own line will comment out the rest of the line and break your code.
+
+Bad (the second clause is commented out, causing an early end to the expression):
+
+```js
+const found =
+  /codeTrackerJS API Support/i.test(text) ||
+  // /api/code-tracker/ intended fallback
+  /\/api\/code-tracker/.test(text);
+```
+
+Good (comment after the expression or use block comments):
+
+```js
+const found =
+  /codeTrackerJS API Support/i.test(text) ||
+  /\/api\/code-tracker/.test(text); // comment goes here
+
+// or
+const found =
+  /codeTrackerJS API Support/i.test(text) ||
+  /\/api\/code-tracker/.test(text); /* block comment is safe */
+```
+
+### Prevention
+
+- Never place `//` on its own line inside a chained expression unless you intend to comment out the rest of that line.
+- Prefer block comments (`/* ... */`) or trailing `//` after the code on the same line.
+- For complex patterns, use `new RegExp()` with clear strings, and run `node --check <file>` after edits to catch syntax issues early.
+
+---
+
+## 11. Normalize execSync/spawnSync outputs before using string methods
+
+### Rule
+
+`execSync` / `spawnSync` return a string only if you pass `encoding`; without it, you get a `Buffer`. Calling `.trim()` on a Buffer throws.
+
+### Prevention pattern
+
+```js
+import { execSync } from "node:child_process";
+
+const raw = execSync("git rev-parse --abbrev-ref HEAD", { encoding: "utf8", stdio: "pipe" });
+const text = typeof raw === "string" ? raw : raw?.toString("utf8") ?? "";
+const branch = text.trim();
+```
+
+- Always pass `encoding: "utf8"` plus `stdio: "pipe"` when you need the output.
+- If you cannot set encoding, explicitly convert the Buffer to a string before calling string helpers.
