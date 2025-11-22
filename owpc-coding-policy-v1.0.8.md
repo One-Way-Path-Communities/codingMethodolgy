@@ -1,9 +1,42 @@
 # Coding Policy and Procedures for One Way Path Communities  
-### Version 1.0.7 — Project Plan, Export Contracts, DB Schema & Behavioural Self-Test Requirements
+### Version 1.0.8 — Project Plan, Export Contracts, DB Schema & Behavioural Self-Test Requirements
 
 ## Terminology Update (From 1.0.1)
 - **Package** = a folder containing multiple ES modules that implement a complete feature.  
 - **Module** = a single `.mjs` ES module within a package.
+
+## Table of Contents
+- [Terminology Update (From 1.0.1)](#terminology-update-from-101)
+- [Updates](#updates)
+- [1. Purpose & Scope](#1-purpose--scope)
+- [2. Development Process & “Don’t Reinvent the Wheel”](#2-development-process--dont-reinvent-the-wheel)
+  - [2.1 Tool Selection Order](#21-tool-selection-order)
+  - [2.2 When to Use Custom Code](#22-when-to-use-custom-code)
+  - [2.3 Package Development Workflow](#23-package-development-workflow)
+- [3. Coding Plan & Repository Setup](#3-coding-plan--repository-setup)
+  - [3.1 Coding Plan Requirements](#31-coding-plan-requirements)
+  - [3.2 Package-Level Plans](#32-package-level-plans)
+  - [3.3 Relationship to ChatGPT and the Package Builder](#33-relationship-to-chatgpt-and-the-package-builder)
+- [4. Code Organization, Structure & Naming](#4-code-organization-structure--naming)
+  - [4.1 Packages and Modules](#41-packages-and-modules)
+  - [4.2 Naming Conventions](#42-naming-conventions)
+  - [4.3 Releases & Versioning](#43-releases--versioning)
+- [5. API Integration & Routing](#5-api-integration--routing)
+  - [5.1 Packages Expose an API Surface](#51-packages-expose-an-api-surface)
+  - [5.2 Hybrid Helper Pattern (Unchanged)](#52-hybrid-helper-pattern-unchanged)
+  - [5.3 Environment Loading](#53-environment-loading)
+- [6. Documentation Requirements](#6-documentation-requirements)
+  - [6.1 README Files](#61-readme-files)
+  - [6.2 JSDoc for Exported Functions](#62-jsdoc-for-exported-functions)
+  - [6.3 Embedded Self-Tests](#63-embedded-self-tests)
+- [7. Code in Hosted Apps](#7-code-in-hosted-apps)
+- [8. ChatGPT Procedural Checklist](#8-chatgpt-procedural-checklist)
+- [9. Appendix: Example Snippet](#9-appendix-example-snippet)
+
+---
+
+## Updates
+- **1.0.8**: Added a Table of Contents, documented the package development workflow, and bumped version metadata.
 
 ---
 
@@ -27,6 +60,15 @@ Use the simplest viable tool:
 
 ### 2.2 When to Use Custom Code
 Only when simpler tools cannot meet complexity, reliability, or integration requirements.
+
+### 2.3 Package Development Workflow
+1. Create a package plan by submitting the package requirements and this coding policy to ChatGPT.  
+2. Create and checkout a new branch from serverJS to for testing of the new package database and routes.
+3. Using the test branch, add any databases needed for the new package to the `DATABASES` variable in `serverJS/.env`, then rebuild the Docker containers so the database is available to the code.  
+4. Use `packageBuilderJS` to generate the core package files from the plan and coding policy; run each module’s self-test and test the orchestrator.  
+5. Use `packageBuilderJS` to generate a generic route for the package and confirm stability via the health check.  
+6. Use `packageBuilderJS` to build the substantive router as defined in the plan, then test it.
+7. After testing is confirmed, merge the new serverJS branch to main and issue versions for both the updated serverJS and the new package. 
 
 ---
 
@@ -228,4 +270,4 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 
 ---
 
-# End of Version 1.0.4
+# End of Version 1.0.8
