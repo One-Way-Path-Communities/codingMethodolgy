@@ -1,5 +1,5 @@
 # Coding Policy and Procedures for One Way Path Communities  
-### Version 1.0.8 — Project Plan, Export Contracts, DB Schema & Behavioural Self-Test Requirements
+### Version 1.0.10 — Project Plan, Export Contracts, DB Schema, Behavioural Self-Test Requirements, Container DB Host Rules
 
 ## Terminology Update (From 1.0.1)
 - **Package** = a folder containing multiple ES modules that implement a complete feature.  
@@ -22,20 +22,25 @@
   - [4.2 Naming Conventions](#42-naming-conventions)
   - [4.3 Releases & Versioning](#43-releases--versioning)
 - [5. API Integration & Routing](#5-api-integration--routing)
-  - [5.1 Packages Expose an API Surface](#51-packages-expose-an-api-surface)
-  - [5.2 Hybrid Helper Pattern (Unchanged)](#52-hybrid-helper-pattern-unchanged)
-  - [5.3 Environment Loading](#53-environment-loading)
+- [5.1 Packages Expose an API Surface](#51-packages-expose-an-api-surface)
+- [5.2 Hybrid Helper Pattern (Unchanged)](#52-hybrid-helper-pattern-unchanged)
+- [5.3 Environment Loading](#53-environment-loading)
+- [5.4 Container DB Host/Port Rules](#54-container-db-hostport-rules)
+- [5.5 Route Testing Scripts](#55-route-testing-scripts)
 - [6. Documentation Requirements](#6-documentation-requirements)
   - [6.1 README Files](#61-readme-files)
   - [6.2 JSDoc for Exported Functions](#62-jsdoc-for-exported-functions)
   - [6.3 Embedded Self-Tests](#63-embedded-self-tests)
 - [7. Code in Hosted Apps](#7-code-in-hosted-apps)
 - [8. ChatGPT Procedural Checklist](#8-chatgpt-procedural-checklist)
-- [9. Appendix: Example Snippet](#9-appendix-example-snippet)
+- [9. Policy Update Procedure](#9-policy-update-procedure)
+- [10. Appendix: Example Snippet](#10-appendix-example-snippet)
 
 ---
 
 ## Updates
+- **1.0.10**: Added Route Testing Scripts rules (dynamic inputs, optional canonical demo defaults, always print failing responses).
+- **1.0.9**: Added container DB host/port rules for package routers; require explicit per-environment host/port instead of implicit localhost swaps inside Docker.
 - **1.0.8**: Added a Table of Contents, documented the package development workflow, and bumped version metadata.
 
 ---
@@ -63,12 +68,16 @@ Only when simpler tools cannot meet complexity, reliability, or integration requ
 
 ### 2.3 Package Development Workflow
 1. Create a package plan by submitting the package requirements and this coding policy to ChatGPT.  
-2. Create and checkout a new branch from serverJS to for testing of the new package database and routes.
+2. Create and checkout a new branch from serverJS for testing of the new package database and routes.
 3. Using the test branch, add any databases needed for the new package to the `DATABASES` variable in `serverJS/.env`, then rebuild the Docker containers so the database is available to the code.  
-4. Use `packageBuilderJS` to generate the core package files from the plan and coding policy; run each module’s self-test and test the orchestrator.  
-5. Use `packageBuilderJS` to generate a generic route for the package and confirm stability via the health check.  
-6. Use `packageBuilderJS` to build the substantive router as defined in the plan, then test it.
-7. After testing is confirmed, merge the new serverJS branch to main and issue versions for both the updated serverJS and the new package. 
+4. Use `packageBuilderJS` to generate the core package files from the plan and coding policy; run each module’s self-test and test the orchestrator. 
+5. Add the new package directory to the docker-compose file to make it accessible by the new route
+6. Use the routeBuilder.mjs script in `packageBuilderJS`to generate a patch file saved in the serverJS directory. The patch file will:
+  a.  Save a new router and its test file using the templates in `packageBuilderJS`
+  b.  Save the new router in the routes folder
+  c.  Save the new test file in the tests folder
+  d.  Add the new router to the index.mjs file
+6. Test and confirm that the new router is working.
 
 ---
 
@@ -180,6 +189,17 @@ Routes are registered centrally using `routes/registerRoutes.mjs`.
 Each package should load its own `.env` file.  
 This keeps `server.mjs` unchanged when adding packages.
 
+### 5.4 Container DB Host/Port Rules
+- Package routers must load their own package `.env` for CODE_TRACKER_* (or package-specific) DB settings.  
+- When running inside Docker, use explicit container overrides (e.g., `CODE_TRACKER_PG_HOST_DOCKER=postgres`, `CODE_TRACKER_PG_PORT_DOCKER=5432`) instead of implicit localhost swaps.  
+- Avoid falling back to `PG_*` or auto-rewriting `localhost:hostport` inside containers; prefer explicit per-environment env vars.  
+- Outside Docker, continue using the standard package DB env values (e.g., `localhost:55432` as defined in the package `.env`).  
+
+### 5.5 Route Testing Scripts
+- Route test scripts/templates must not hard-code module/branch/tag values. They must accept inputs via env/CLI flags, or first discover existing sample data (e.g., call `/modules`) before asserting.
+- If the project plan defines canonical demo data, default to those values but still allow overrides.
+- Tests should always print response bodies for failing checks to aid debugging.
+
 ---
 
 ## 6. Documentation Requirements
@@ -254,7 +274,18 @@ ChatGPT must always:
 
 ---
 
-## 9. Appendix: Example Snippet
+## 9. Policy Update Procedure
+- Add the new content or rule changes.  
+- Update the Table of Contents with any new sections/anchors.  
+- Bump the version number.  
+- Describe the changes in the **Updates** section.  
+- Update the title line to include the new version.  
+- Rename the policy file to match the new version (e.g., `...-v1.0.10.md`).  
+- Update the footer/version tag at the end of the document.
+
+---
+
+## 10. Appendix: Example Snippet
 
 ### Example JSDoc + Self-Test
 
@@ -270,4 +301,4 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 
 ---
 
-# End of Version 1.0.8
+# End of Version 1.0.10
