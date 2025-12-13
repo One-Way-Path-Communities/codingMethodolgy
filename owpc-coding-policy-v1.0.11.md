@@ -1,5 +1,5 @@
 # Coding Policy and Procedures for One Way Path Communities  
-### Version 1.0.10 — Project Plan, Export Contracts, DB Schema, Behavioural Self-Test Requirements, Container DB Host Rules
+### Version 1.0.11 — Project Plan, Export Contracts, DB Schema, Behavioural Self-Test Requirements, Container DB Host Rules, Route Add Checklist
 
 ## Terminology Update (From 1.0.1)
 - **Package** = a folder containing multiple ES modules that implement a complete feature.  
@@ -27,6 +27,7 @@
 - [5.3 Environment Loading](#53-environment-loading)
 - [5.4 Container DB Host/Port Rules](#54-container-db-hostport-rules)
 - [5.5 Route Testing Scripts](#55-route-testing-scripts)
+- [5.6 Adding a Route to serverJS (Step-by-Step)](#56-adding-a-route-to-serverjs-step-by-step)
 - [6. Documentation Requirements](#6-documentation-requirements)
   - [6.1 README Files](#61-readme-files)
   - [6.2 JSDoc for Exported Functions](#62-jsdoc-for-exported-functions)
@@ -39,6 +40,7 @@
 ---
 
 ## Updates
+- **1.0.11**: Added a step-by-step checklist for adding a new route to serverJS using the routeBuilder workflow.
 - **1.0.10**: Added Route Testing Scripts rules (dynamic inputs, optional canonical demo defaults, always print failing responses).
 - **1.0.9**: Added container DB host/port rules for package routers; require explicit per-environment host/port instead of implicit localhost swaps inside Docker.
 - **1.0.8**: Added a Table of Contents, documented the package development workflow, and bumped version metadata.
@@ -200,6 +202,15 @@ This keeps `server.mjs` unchanged when adding packages.
 - If the project plan defines canonical demo data, default to those values but still allow overrides.
 - Tests should always print response bodies for failing checks to aid debugging.
 
+### 5.6 Adding a Route to serverJS (Step-by-Step)
+1. Cut a feature branch from the `serverJS` default branch for the new package route work.
+2. Add any required databases for the package to the `DATABASES` variable in `serverJS/.env`, then rebuild Docker so the DB containers are available to the route code.
+3. Add the new package directory to the `docker-compose` file so the container exposes the package code for routing.
+4. From the package plan and this policy, run `packageBuilderJS/routeBuilder.mjs` to generate the route patch file in the `serverJS` directory (keeps `server.mjs` unchanged).
+5. Apply the patch and confirm it created the router in `routes/`, the test in `tests/`, and exported the router via `routes/index.mjs` with kebab-case naming. Ensure the router loads its own package `.env` values.
+6. Confirm `routes/registerRoutes.mjs` registers the new router (Hybrid Helper Pattern) and that no direct edits were made to `server.mjs`.
+7. Run the package module self-tests and the generated route test to verify the new route end-to-end.
+
 ---
 
 ## 6. Documentation Requirements
@@ -280,7 +291,7 @@ ChatGPT must always:
 - Bump the version number.  
 - Describe the changes in the **Updates** section.  
 - Update the title line to include the new version.  
-- Rename the policy file to match the new version (e.g., `...-v1.0.10.md`).  
+- Rename the policy file to match the new version (e.g., `...-v1.0.11.md`).  
 - Update the footer/version tag at the end of the document.
 
 ---
@@ -301,4 +312,4 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 
 ---
 
-# End of Version 1.0.10
+# End of Version 1.0.11
