@@ -1,5 +1,5 @@
 # Coding Policy and Procedures for One Way Path Communities  
-### Version 1.0.11 — Project Plan, Export Contracts, DB Schema, Behavioural Self-Test Requirements, Container DB Host Rules, Route Add Checklist
+### Version 1.0.13 — Project Plan, Export Contracts, DB Schema, Behavioural Self-Test Requirements, Container DB Host Rules, Route Add Checklist
 
 ## Terminology Update (From 1.0.1)
 - **Package** = a folder containing multiple ES modules that implement a complete feature.  
@@ -40,6 +40,8 @@
 ---
 
 ## Updates
+- **1.0.13**: Require install-deps scripts to prompt before installing dependencies.
+- **1.0.12**: Require packages with orchestrators to run install-deps before orchestrator execution.
 - **1.0.11**: Added a step-by-step checklist for adding a new route to serverJS using the routeBuilder workflow.
 - **1.0.10**: Added Route Testing Scripts rules (dynamic inputs, optional canonical demo defaults, always print failing responses).
 - **1.0.9**: Added container DB host/port rules for package routers; require explicit per-environment host/port instead of implicit localhost swaps inside Docker.
@@ -134,7 +136,9 @@ Each **package** needs a package-level plan document (e.g. `codeTrackerJS-projec
   - What a successful run looks like.
 - **Install script requirement**:
   - Each package must define a bash script named e.g. `scripts/install-deps.sh` that installs all required dependencies for that package (Node modules like `pg`, `dotenv`, `comment-parser`, etc., and any other tools the self-tests rely on).
+  - The install script must prompt for confirmation before installing dependencies.
   - The project plan must list what that script is responsible for installing.
+  - Packages with an orchestrator must ensure the install script runs before the orchestrator (e.g., via an npm script wrapper or orchestrator preflight).
 
 ### 3.3 Relationship to ChatGPT and the Package Builder
 When using ChatGPT or the package builder to generate code:
@@ -312,4 +316,4 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 
 ---
 
-# End of Version 1.0.11
+# End of Version 1.0.13
