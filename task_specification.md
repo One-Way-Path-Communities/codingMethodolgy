@@ -101,8 +101,10 @@ If a task explicitly overrides any default, the task's explicit instruction wins
 
 When using AI to generate a task based on this specification:
 1) Populate each section explicitly.
-2) Do not introduce additional sections or Agile terminology beyond this specification.
-3) Keep language neutral, professional, and execution-focused.
+2) Output plain text only. Do not use Markdown, bold, or code blocks.
+3) Use all-caps section headings (e.g., "TASK OVERVIEW").
+4) Do not introduce additional sections or Agile terminology beyond this specification.
+5) Keep language neutral, professional, and execution-focused.
 4) Assume the reader is a technical contributor with repository access.
 5) Do not include boilerplate like "Brief run instructions if new steps are required."
 6) For Figma-only tasks, sections 2 (Repositories and Branching), 4 (Inputs / Access Provided), and 6 (Environment Configuration) are not required.
