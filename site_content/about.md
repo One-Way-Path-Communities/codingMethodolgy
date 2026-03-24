@@ -37,12 +37,9 @@ Strong outcomes are driven by depth and alignment of experience.
 
 ---
 
-## Built for the Long Term
+## Built for Community Benefit
 
-We approach development with a long-term mindset.
-
-Plan carefully.  
-Build properly.  
-Deliver consistently.
-
-Well-built housing strengthens communities for decades.
+- Adds well-designed, purpose-built rental housing for families and ndividuals of all ages
+- Enables residents to age in place with access to supportive services  
+- Creates skilled local employment during development and construction  
+- Delivers high-performance buildings with reduced long-term impact  
