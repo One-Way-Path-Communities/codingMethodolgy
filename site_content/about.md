@@ -24,16 +24,16 @@ When homes are designed and constructed properly, residents stay longer and buil
 
 ## Experience at Every Stage
 
-Our projects are supported by experienced architects, engineers, planners, and construction professionals who remain engaged throughout key phases of delivery.
+Ownership is structured to align experienced participants with each development, with many having worked together on past projects, bringing shared, overlapping and relevant experience to each team.
 
 We prioritize:
+- A unique, purpose-built project entity for each project
+- Structuring joint ventures to embed relevant experience
+- Leveraging shared, overlapping project experience
+- Tailoring the make up of each joint venture to match specific project needs
 
-- Coordinated documentation  
-- Clear scopes of work  
-- Structured project management  
-- Practical, buildable solutions  
 
-Strong outcomes come from experience, preparation, and accountability.
+Strong outcomes are driven by depth and alignment of experience.
 
 ---
 
