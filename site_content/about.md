@@ -8,7 +8,7 @@ One Way Path Communities develops purpose-built rental housing designed for long
 
 ## Homes People Choose to Stay In
 
-Our communities are designed for permanence.
+Our communities are designed for long-term living.
 
 - Functional, family-friendly floorplans  
 - Generous natural light and efficient layouts  
