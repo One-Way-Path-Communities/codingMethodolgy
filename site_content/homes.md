@@ -18,11 +18,12 @@ Thoughtful floorplans, durable materials, and efficient systems create homes tha
 
 ## Typical Project Mix
 
-- **140 Suites per Project**  
-- **24% Multi-tenant Units**  
-- **1,000+ Sq. Ft. Townhouses**
+- 140 Suites per Project
+- 24% Multi-tenant Units
+- 1,000+ Sq. Ft. Townhouses
 
 A balanced mix of housing types supports both affordability and long-term community stability.
+
 
 ---
 
