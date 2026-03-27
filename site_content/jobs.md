@@ -8,6 +8,14 @@ Employment is not incidental to development — it is a core community outcome.
 
 ---
 
+## Sustained Local Impact
+
+Beyond construction, purpose-built rental housing supports long-term operational roles including property management, maintenance, leasing, and building services.
+
+Stable housing development contributes to economic continuity and workforce resilience within the communities we serve.
+
+---
+
 ## Projected Economic Impact Per Project
 
 ### $50 Million  
@@ -20,9 +28,3 @@ Construction & Professional Services
 Supply Chain & Community Impact
 
 ---
-
-## Sustained Local Impact
-
-Beyond construction, purpose-built rental housing supports long-term operational roles including property management, maintenance, leasing, and building services.
-
-Stable housing development contributes to economic continuity and workforce resilience within the communities we serve.

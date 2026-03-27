@@ -14,10 +14,10 @@ Our approach is simple: well-designed homes, with access to services when needed
 
 Residents live independently in thoughtfully designed suites, with the ability to access additional support services over time as needs evolve.
 
-- Private, self-contained rental homes  
+- Private, self-contained rental homes
 - Access to on-demand services
-- Currated community connections 
-- Flexibility to scale support over time  
+- Curated community connections
+- Flexibility to scale support over time
 
 ---
 

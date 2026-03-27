@@ -21,7 +21,7 @@ Enhanced insulation, glazing, and air-sealing reduce thermal demand at the sourc
 
 ---
 
-## Annual On-Site Performance
+## System Integration Performance
 
 - **40%+ Better than NECB/NBC**  
 - **60%+ Energy Reduction**  
